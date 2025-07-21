@@ -1,4 +1,5 @@
-
+require("config.lazy")
+local telescope = require('telescope.builtin')
 -- Set <space> as the leader key
 -- See `:help mapleader`
 -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -15,7 +16,7 @@ vim.o.number = true
 
 -- Use relative line numbers, so that it is easier to jump with j, k. This will affect the 'number'
 -- option above, see `:h number_relativenumber`
-vim.o.relativenumber = false
+vim.o.relativenumber = true
 
 -- Sync clipboard between OS and Neovim. Schedule the setting after `UiEnter` because it can
 -- increase startup-time. Remove this option if you want your OS clipboard to remain independent.
@@ -45,8 +46,8 @@ vim.o.confirm = true
 
 
 -- MY CUSTOM OPTIONS
-
-
+vim.o.number = true
+vim.o.showmode = true
 
 -- [[ Set up keymaps ]] See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
 
@@ -63,6 +64,13 @@ vim.keymap.set({ 'n' }, '<A-j>', '<C-w>j')
 vim.keymap.set({ 'n' }, '<A-k>', '<C-w>k')
 vim.keymap.set({ 'n' }, '<A-l>', '<C-w>l')
 
+-- Telescope
+
+vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', telescope.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fb', telescope.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set('n', '<leader>fh', telescope.help_tags, { desc = 'Telescope help tags' })
+
 -- [[ Basic Autocommands ]].
 -- See `:h lua-guide-autocommands`, `:h autocmd`, `:h nvim_create_autocmd()`
 
@@ -75,6 +83,19 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+   -- augroup RestoreCursor
+   -- autocmd!
+   --   autocmd BufReadPre * autocmd FileType <buffer> ++once
+   --     \ let s:line = line("'\"")
+   --     \ | if s:line >= 1 && s:line <= line("$") && &filetype !~# 'commit'
+   --     \      && index(['xxd', 'gitrebase'], &filetype) == -1
+   --     \ |   execute "normal! g`\""
+   --     \ | endif
+   -- augroup END
+   --
+
+
+
 -- [[ Create user commands ]]
 -- See `:h nvim_create_user_command()` and `:h user-commands`
 
@@ -84,6 +105,19 @@ vim.api.nvim_create_user_command('GitBlameLine', function()
   local filename = vim.api.nvim_buf_get_name(0)
   print(vim.fn.system({ 'git', 'blame', '-L', line_number .. ',+1', filename }))
 end, { desc = 'Print the git blame for the current line' })
+
+vim.api.nvim_create_user_command('DiffOrig', function()
+	vim.cmd([[
+	vert new
+	setlocal buftype=nofile
+	read ++edit #
+	0delete _
+	diffthis
+	wincmd p
+	diffthis
+	]])
+end, {})
+
 
 -- [[ Add optional packages ]]
 -- Nvim comes bundled with a set of packages that are not enabled by
