@@ -49,6 +49,9 @@ vim.o.confirm = true
 vim.o.number = true
 vim.o.showmode = true
 
+vim.cmd("colorscheme lunaperche")
+
+
 -- [[ Set up keymaps ]] See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
 
 -- Use <Esc> to exit terminal mode
