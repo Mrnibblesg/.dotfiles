@@ -1,6 +1,4 @@
-local telescope = require('telescope.builtin')
-
--- [[ Set up keymaps ]] See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
+-- [[ Set up keymaps ]] See `:h vim.keymap.set
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
 vim.keymap.set({ 't', 'i' }, '<A-h>', '<C-\\><C-n><C-w>h')
@@ -16,6 +14,15 @@ vim.keymap.set({ 'n' }, '<A-l>', '<C-w>l')
 vim.keymap.set({ 'n' }, '<leader><leader>x', '<cmd>source %<CR>')
 vim.keymap.set({ 'n' }, '<leader>x', '<cmd>.lua<CR>')
 vim.keymap.set({ 'v' }, '<leader>x', ':lua<CR>')
+
+--Disable arrow keys
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!"<CR>')
+
+--Diagnostics
+vim.keymap.set('n', '<leader>dd', vim.lsp.buf.definition)
 
 -- [[ Create user commands ]]
 -- See `:h nvim_create_user_command()` and `:h user-commands`
