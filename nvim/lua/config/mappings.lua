@@ -15,7 +15,7 @@ vim.keymap.set({ 'n' }, '<leader><leader>x', '<cmd>source %<CR>')
 vim.keymap.set({ 'n' }, '<leader>x', '<cmd>.lua<CR>')
 vim.keymap.set({ 'v' }, '<leader>x', ':lua<CR>')
 
---Disable arrow keys
+--Disable arrow keys fhj
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!"<CR>')
 vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!"<CR>')
@@ -23,6 +23,11 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!"<CR>')
 
 --Diagnostics
 vim.keymap.set('n', '<leader>dd', vim.lsp.buf.definition)
+vim.keymap.set('n', '<leader>dt', function()
+    local cfg = vim.diagnostic.config()
+    vim.diagnostic.config({virtual_text = not cfg.virtual_text})
+  end
+)
 
 -- [[ Create user commands ]]
 -- See `:h nvim_create_user_command()` and `:h user-commands`
