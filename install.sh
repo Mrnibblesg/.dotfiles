@@ -5,7 +5,8 @@
 # Overwrite links if the link to be set already exists
 configs=("nvim" "kitty")
 config_path=$HOME/.config/
-echo 
+script_path=$(dirname "$(readlink -f "$0")")
+echo $script_path
 echo Mrnibbles\' Dotfiles. Contains the following configs:
 for config in ${configs[@]}; do
     echo $config
@@ -33,7 +34,7 @@ for config in ${configs[@]}; do
         fi
         mv -f "${config_path}${config}" $backup
     fi
-    ln -fs "$(dirname $0)/${config}" "${config_path}${config}"
+    ln -fs "$script_path/${config}" "${config_path}${config}"
     echo Loaded config "${config_path}${config}"
 done
 
