@@ -20,6 +20,14 @@ return {
           cwd = vim.fn.stdpath("config")
         }
       end)
+      -- Edit config files of this dotfiles repo.
+      -- Use a hard-coded relative path.
+      vim.keymap.set('n', "<leader>ec", function()
+        builtin.find_files {
+          cwd = vim.fn.stdpath("config") .. '/..'
+          --Configs in this repo use links from the $XDG_CONFIG_DIRS to this repo, so pwd won't represent the correct path upwards.
+        }
+      end)
     end
   }
 }
