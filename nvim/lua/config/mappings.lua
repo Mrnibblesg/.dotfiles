@@ -23,10 +23,13 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!"<CR>')
 
 --Diagnostics
 vim.keymap.set('n', '<leader>dd', vim.lsp.buf.definition)
+vim.keymap.set('n', '<leader>dD', vim.lsp.buf.declaration)
+vim.keymap.set('n', '<leader>dr', vim.lsp.buf.references)
+vim.keymap.set('n', '<leader>bf', vim.lsp.buf.format)
 vim.keymap.set('n', '<leader>dt', function()
-    local cfg = vim.diagnostic.config()
-    vim.diagnostic.config({virtual_text = not cfg.virtual_text})
-  end
+  local cfg = vim.diagnostic.config()
+  vim.diagnostic.config({ virtual_text = not cfg.virtual_text })
+end
 )
 
 -- [[ Create user commands ]]

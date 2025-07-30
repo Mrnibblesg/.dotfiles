@@ -26,6 +26,6 @@ return {
     -- If it's not there, you can also define your own.
     configs.lua_ls.setup(on_attach)
     configs.clangd.setup(on_attach)
-    
+    configs.bashls.setup(on_attach)
   end,
 }
