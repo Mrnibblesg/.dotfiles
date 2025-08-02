@@ -14,6 +14,7 @@ return {
       vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
       vim.keymap.set('n', '<leader>fi', builtin.builtin, { desc = 'Telescope finders' })
       vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = 'Telescope diagnostics' })
+      vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = 'Recently opened files' })
 
       vim.keymap.set('n', "<leader>en", function()
         builtin.find_files {

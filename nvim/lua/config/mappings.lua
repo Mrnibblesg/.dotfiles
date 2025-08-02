@@ -15,17 +15,23 @@ vim.keymap.set({ 'n' }, '<leader><leader>x', '<cmd>source %<CR>')
 vim.keymap.set({ 'n' }, '<leader>x', '<cmd>.lua<CR>')
 vim.keymap.set({ 'v' }, '<leader>x', ':lua<CR>')
 
---Disable arrow keys fhj
+--Disable arrow keys
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!"<CR>')
 vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!"<CR>')
+
 
 --Diagnostics
 vim.keymap.set('n', '<leader>dd', vim.lsp.buf.definition)
 vim.keymap.set('n', '<leader>dD', vim.lsp.buf.declaration)
 vim.keymap.set('n', '<leader>dr', vim.lsp.buf.references)
 vim.keymap.set('n', '<leader>bf', vim.lsp.buf.format)
+vim.keymap.set('n', '<leader>bs', function()
+  local bufnr = vim.api.nvim_create_buf(true, true)
+  vim.api.nvim_buf_set_name(bufnr, "Scratch" .. bufnr)
+  vim.api.nvim_open_win(bufnr, true, {win = 0, vertical = true, split="right"})
+end)
 vim.keymap.set('n', '<leader>dt', function()
   local cfg = vim.diagnostic.config()
   vim.diagnostic.config({ virtual_text = not cfg.virtual_text })
