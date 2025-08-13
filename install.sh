@@ -3,7 +3,7 @@
 # For each file here, make link with same name in $HOME/.config?
 # Make sure an existing config isn't about to be overwritten?
 # Overwrite links if the link to be set already exists
-configs=("nvim" "kitty")
+configs=("nvim" "kitty" "onedrive")
 config_path=$HOME/.config/
 script_path=$(dirname "$(readlink -f "$0")")
 echo $script_path

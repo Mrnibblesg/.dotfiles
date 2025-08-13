@@ -16,7 +16,13 @@ return {
       vim.keymap.set('n', '<leader>fi', builtin.builtin, { desc = 'Telescope finders' })
       vim.keymap.set('n', '<leader>fe', builtin.diagnostics, { desc = 'Telescope diagnostics' })
       vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = 'Recently opened files' })
+
       vim.keymap.set('n', '<leader>fd', finddir.finddir, {desc = 'Directories'})
+
+      vim.keymap.set('n', '<leader>gs', builtin.git_status, {desc = 'Git status'})
+      vim.keymap.set('n', '<leader>gc', builtin.git_commits, {desc = 'Git commits'})
+      vim.keymap.set('n', '<leader>gf', builtin.git_files, {desc = 'Tracked files'})
+      vim.keymap.set('n', '<leader>gb', builtin.git_branches, {desc = 'Branches'})
 
       vim.keymap.set('n', "<leader>en", function()
         builtin.find_files {
@@ -28,7 +34,8 @@ return {
       vim.keymap.set('n', "<leader>ec", function()
         builtin.find_files {
           cwd = vim.fn.stdpath("config") .. '/..'
-          --Configs in this repo use links from the $XDG_CONFIG_DIRS to this repo, so pwd won't represent the correct path upwards.
+          --Configs in this repo use links from the $XDG_CONFIG_DIRS to this repo,
+          --so pwd won't represent the correct path upwards.
         }
       end)
     end
