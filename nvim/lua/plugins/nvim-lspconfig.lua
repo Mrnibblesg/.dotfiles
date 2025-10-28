@@ -18,14 +18,23 @@ return {
     },
   },
   config = function()
-    local configs = require("lspconfig")
     local on_attach = {on_attach = function(client, bufnr)
         vim.api.nvim_set_option_value("signcolumn", "yes", {scope="local"})
     end}
     -- Remember to get your language servers!!! Check :h lspconfig-all and find the section for your specific language.
     -- If it's not there, you can also define your own.
-    configs.lua_ls.setup(on_attach)
-    configs.clangd.setup(on_attach)
-    configs.bashls.setup(on_attach)
+--    configs.lua_ls.setup(on_attach)
+    vim.lsp.config('lua_ls', {
+      on_attach = on_attach
+    })
+    vim.lsp.enable('lua_ls')
+    vim.lsp.config('clangd', {
+      on_attach = on_attach
+    })
+    vim.lsp.enable('clangd')
+    vim.lsp.config('bashls', {
+      on_attach = on_attach
+    })
+    vim.lsp.enable('bashls')
   end,
 }
