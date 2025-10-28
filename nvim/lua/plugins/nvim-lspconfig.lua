@@ -23,7 +23,6 @@ return {
     end}
     -- Remember to get your language servers!!! Check :h lspconfig-all and find the section for your specific language.
     -- If it's not there, you can also define your own.
---    configs.lua_ls.setup(on_attach)
     vim.lsp.config('lua_ls', {
       on_attach = on_attach
     })
@@ -36,5 +35,10 @@ return {
       on_attach = on_attach
     })
     vim.lsp.enable('bashls')
+    vim.lsp.config('pylsp', {
+      on_attach = on_attach
+    })
+    vim.lsp.enable('pylsp')
+
   end,
 }
