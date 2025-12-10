@@ -9,6 +9,7 @@ return {
     config = function()
       local builtin = require('telescope.builtin')
       local finddir = require('telescope').load_extension('finddir')
+      -- Find additional controls within each finder with :help Telescope.nvim
       vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
       vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
       vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
@@ -16,7 +17,7 @@ return {
       vim.keymap.set('n', '<leader>fi', builtin.builtin, { desc = 'Telescope finders' })
       vim.keymap.set('n', '<leader>fe', builtin.diagnostics, { desc = 'Telescope diagnostics' })
       vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = 'Recently opened files' })
-
+      -- TODO: Add preview for what's inside, like maybe a call to tree to list containted files and subdirs.
       vim.keymap.set('n', '<leader>fd', finddir.finddir, {desc = 'Directories'})
 
       vim.keymap.set('n', '<leader>gs', builtin.git_status, {desc = 'Git status'})

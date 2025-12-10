@@ -41,7 +41,8 @@
 #debug_https = "false"
 
 ## This setting controls whether 'inotify' events should be delayed or not.
-#delay_inotify_processing = "false"
+delay_inotify_processing = "true"
+inotify_delay = "15"
 
 ## This option determines whether the client will conduct integrity validation on files downloaded from Microsoft OneDrive.
 #disable_download_validation = "false"
@@ -80,7 +81,7 @@
 #force_http_11 = "false"
 
 ## This option, when enabled, forces the client to use a 'session' upload, which, when the 'file' is uploaded by the session, this includes the local timestamp of the file
-#force_session_upload = "false"
+force_session_upload = "true"
 
 ## This setting controls the application IP protocol used when communicating with Microsoft OneDrive.
 #ip_protocol_version = "0"
@@ -143,7 +144,7 @@
 #skip_dotfiles = "false"
 
 ## This setting controls which files are skipped during sync.
-skip_file = "~*|.~*|*.tmp|*.swp|*.partial|data.json|workspace.json"
+skip_file = "~*|.~*|*.tmp|*.swp|*.partial|data.json|workspace.json|*safeBackup*"
 
 ## Skip syncing files larger than this size in MB.
 #skip_size = "0"
@@ -158,7 +159,7 @@ skip_file = "~*|.~*|*.tmp|*.swp|*.partial|data.json|workspace.json"
 #sync_business_shared_items = "false"
 
 ## Local directory to sync with OneDrive.
-#sync_dir = "~/OneDrive"
+sync_dir = "~/OneDrive"
 
 ## Permissions to apply to created local directories.
 #sync_dir_permissions = "700"

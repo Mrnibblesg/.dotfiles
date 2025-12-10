@@ -36,7 +36,16 @@ return {
     })
     vim.lsp.enable('bashls')
     vim.lsp.config('pylsp', {
-      on_attach = on_attach
+      on_attach = on_attach,
+      settings = {
+        pylsp = {
+          plugins = {
+            pycodestyle = {
+              ignore = {'E265', 'E501'},
+            }
+          }
+        }
+      }
     })
     vim.lsp.enable('pylsp')
 
