@@ -13,13 +13,13 @@ local directories = function(opts)
   opts = opts or {}
   pickers.new(opts, {
     prompt_title = "Directory",
-    finder = finders.new_oneshot_job({"fd", "--type=d"}, opts),
+    finder = finders.new_oneshot_job({"fd", "-H", "--type=d"}, opts),
     sorter = conf.generic_sorter(opts),
     attach_mappings = function(prompt_bufnr)
       actions.select_default:replace(function()
         actions.close(prompt_bufnr)
         local selection = action_state.get_selected_entry()
-        vim.cmd("Vex " .. selection[1])
+        vim.cmd("e " .. selection[1])
       end)
       return true
     end,

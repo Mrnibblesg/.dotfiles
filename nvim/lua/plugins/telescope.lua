@@ -25,6 +25,8 @@ return {
       vim.keymap.set('n', '<leader>gf', builtin.git_files, {desc = 'Tracked files'})
       vim.keymap.set('n', '<leader>gb', builtin.git_branches, {desc = 'Branches'})
 
+      vim.keymap.set('n', '<leader>ts', builtin.treesitter, {desc = 'Treesitter'})
+
       vim.keymap.set('n', "<leader>en", function()
         builtin.find_files {
           cwd = vim.fn.stdpath("config")
