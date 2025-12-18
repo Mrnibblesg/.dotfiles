@@ -119,9 +119,10 @@ for theme in ${themes[@]}; do
     echo "$script_path/themes/plasma/$theme/$icon_offset"
 
     # Icons, color scheme, overall theme.
-    #ln -fs "$HOME/$icon_offset" "$script_path/themes/plasma/$theme/$icon_offset"
-    #ln -fs "$HOME/$color_offset" "$script_path/themes/plasma/$theme/$color_offset"
-    #ln -fs "$HOME/$theme_offset" "$script_path/themes/plasma/$theme/$theme_offset"
+    # Will improve copying mechanism later
+    ln -fs "$script_path/themes/plasma/$theme/$icon_offset/$theme" "$HOME/$icon_offset"
+    ln -fs "$script_path/themes/plasma/$theme/$color_offset/$theme.colors" "$HOME/$color_offset"
+    ln -fs "$script_path/themes/plasma/$theme/$theme_offset/$theme" "$HOME/$theme_offset"
 done
 
 echo Finished installing. Thank you and enjoy!
