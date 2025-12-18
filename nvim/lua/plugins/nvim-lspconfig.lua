@@ -48,6 +48,9 @@ return {
       }
     })
     vim.lsp.enable('pylsp')
-
+    vim.lsp.config('ts_ls', {
+      on_attach = on_attach
+    })
+    vim.lsp.enable('ts_ls')
   end,
 }

@@ -1,0 +1,19 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "-",
+                "Name": "Parker Gutierrez"
+            }
+        ],
+        "Description": "My first theme",
+        "Id": "Futuristica",
+        "License": "LGPL 2.1+",
+        "Name": "Futuristica",
+        "Website": "-"
+    },
+    "Keywords": "Desktop;Workspace;Appearance;Look and Feel;",
+    "X-Plasma-APIVersion": "2",
+    "X-Plasma-MainScript": "default"
+}
