@@ -38,6 +38,7 @@ if [[ $backup == "y" || $backup == "Y" || -n $backup ]]; then
 fi
 
 # look at using mv -ft instead for backups
+# For recursively listing every file's path in a dir, use find (dir). It'll be clean
 for config in ${configs[@]}; do
     if [[ $amount == "some" ]]; then
         read -p "Load config for $config? (Y/n) " resp
@@ -54,7 +55,17 @@ for config in ${configs[@]}; do
         fi
         mv -f "${config_path}${config}" $backup_path
     fi
-
-    ln -fs "$script_path/${config}" "${config_path}${config}"
+    
+    # Mirror everything in the configs path to the home directory.
+    # If a directory doesn't exist, it should be made to exist.
+    # When should we link the whole directory as opposed to every single file?
+    ln -fs "$script_path/configs/.config/${config}" "${config_path}${config}"
+    
     echo Loaded config "${config_path}${config}"
 done
+
+
+# INSTALL THEMES
+read -p "Install themes? (Y/n) " theme_resp
+
+
