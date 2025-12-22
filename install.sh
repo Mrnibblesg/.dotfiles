@@ -104,6 +104,11 @@ fi
 mkdir -p "$HOME/.local/share/color-schemes"
 mkdir -p "$HOME/.local/share/icons"
 mkdir -p "$HOME/.local/share/plasma/look-and-feel"
+
+# TODO wallpapers hardcoded in, make per-theme in later fix.
+mkdir -p $HOME/Pictures/wallpapers/hitech
+cp $script_path/themes/wallpapers/* $HOME/Pictures/wallpapers/hitech
+
 icon_offset=".local/share/icons/"
 color_offset=".local/share/color-schemes/"
 theme_offset=".local/share/plasma/look-and-feel/"
@@ -119,9 +124,11 @@ for theme in ${themes[@]}; do
     echo "$script_path/themes/plasma/$theme/$icon_offset"
 
     # Icons, color scheme, overall theme.
-    #ln -fs "$HOME/$icon_offset" "$script_path/themes/plasma/$theme/$icon_offset"
-    #ln -fs "$HOME/$color_offset" "$script_path/themes/plasma/$theme/$color_offset"
-    #ln -fs "$HOME/$theme_offset" "$script_path/themes/plasma/$theme/$theme_offset"
+    # Will improve copying mechanism later
+    # Plasma is really bad when it comes to themes and symlinks so we must copy instead of link.
+    ln -fs "$script_path/themes/plasma/$theme/$icon_offset/$theme" "$HOME/$icon_offset"
+    ln -fs "$script_path/themes/plasma/$theme/$color_offset/$theme.colors" "$HOME/$color_offset"
+    ln -fs "$script_path/themes/plasma/$theme/$theme_offset/$theme" "$HOME/$theme_offset"
 done
 
 echo Finished installing. Thank you and enjoy!
