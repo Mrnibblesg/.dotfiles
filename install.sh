@@ -2,7 +2,7 @@
 
 # To tackle the problem of configs needing to go into various locations:
 #  - Directory as a package organization. Inside the dotfiles repo, each package or set of configs mimic the home directory structure with the places they need to go.
-configs=("nvim" "kitty" "onedrive")
+configs=("nvim" "kitty" "onedrive" "kglobalshortcutsrc")
 config_path=$HOME/.config/
 script_path=$(dirname "$(readlink -f "$0")")
 
