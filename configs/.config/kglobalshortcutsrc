@@ -1,3 +1,8 @@
+[ActivityManager]
+_k_friendly_name=Activity Manager
+switch-to-activity-1234b605-7545-43f6-b562-5813045e0bbe=none,none,Switch to activity "College"
+switch-to-activity-1530abde-4a7e-4fd1-841c-67a5064f1746=none,none,Switch to activity "Home"
+
 [KDE Keyboard Layout Switcher]
 Switch keyboard layout to English (US)=none,none,Switch keyboard layout to English (US)
 Switch to Last-Used Keyboard Layout=Meta+Alt+L,Meta+Alt+L,Switch to Last-Used Keyboard Layout
@@ -77,9 +82,9 @@ Switch to Desktop 2=Ctrl+F2,Ctrl+F2,Switch to Desktop 2
 Switch to Desktop 20=none,,Switch to Desktop 20
 Switch to Desktop 3=Ctrl+F3,Ctrl+F3,Switch to Desktop 3
 Switch to Desktop 4=Ctrl+F4,Ctrl+F4,Switch to Desktop 4
-Switch to Desktop 5=none,,Switch to Desktop 5
+Switch to Desktop 5=Ctrl+F5,,Switch to Desktop 5
 Switch to Desktop 6=none,,Switch to Desktop 6
-Switch to Desktop 7=none,,Switch to Desktop 7
+Switch to Desktop 7=Ctrl+F6,,Switch to Desktop 7
 Switch to Desktop 8=none,,Switch to Desktop 8
 Switch to Desktop 9=none,,Switch to Desktop 9
 Switch to Next Desktop=none,,Switch to Next Desktop
@@ -268,3 +273,13 @@ _launch=Ctrl+ោ\tCtrl+Alt+T
 [services][net.local.spectacle.desktop]
 _launch=Ctrl+Print
 
+[wacomtablet]
+Map to fullscreen=Meta+Ctrl+F,Meta+Ctrl+F,Map to fullscreen
+Map to screen 1=Meta+Ctrl+1,Meta+Ctrl+1,Map to screen 1
+Map to screen 2=Meta+Ctrl+2,Meta+Ctrl+2,Map to screen 2
+Next Profile=Meta+Ctrl+N,Meta+Ctrl+N,Next profile
+Previous Profile=Meta+Ctrl+P,Meta+Ctrl+P,Previous Profile
+Toggle screen map selection=Meta+Ctrl+M,Meta+Ctrl+M,Toggle between all screens
+Toggle stylus mode=Meta+Ctrl+S,Meta+Ctrl+S,Toggle the Stylus Tool Relative/Absolute
+Toggle touch tool=Meta+Ctrl+T,Meta+Ctrl+T,Enable/Disable the Touch Tool
+_k_friendly_name=Wacom Tablet
