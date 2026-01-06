@@ -270,6 +270,9 @@ toggle do not disturb=none,,Toggle do not disturb
 [services][kitty.desktop]
 _launch=Ctrl+ោ\tCtrl+Alt+T
 
+[services][net.local.spectacle-2.desktop]
+_launch=Ctrl+Alt+J
+
 [services][net.local.spectacle.desktop]
 _launch=Ctrl+Print
 
