@@ -1,6 +1,18 @@
 # Mrnibbles' Dotfiles
 My linux configurations you can use to enrich your own. Contains program configs and DE themes along with accompanying install scripts.
 
+## Table of Contents
+- [Installation](#installation)
+- [Updating](#updating)
+- [Keybinds](#keybinds)
+    - [Essential](#essential)
+    - [Typing/Text](#typingtext)
+    - [Window Management](#window-management)
+    - [Workspace Management](#workspace-management)
+    - [Session Management](#session-management)
+    - [Misc. Actions](misc-actions)
+  - [Recommended Fonts](recommended-fonts)
+
 # Installation
 Use the install script. It's currently set up to install both configs and themes. There's options to choose which configs/themes to install and whether to backup or clobber existing configs. Uses the XDG Base Directory Specification to determine destination.
 
