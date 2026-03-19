@@ -41,7 +41,7 @@ return {
         pylsp = {
           plugins = {
             pycodestyle = {
-              ignore = {'E265', 'E501'},
+              ignore = {'E265', 'E501', 'W503', 'E303', 'E226', 'E266', 'E261', 'W', 'E'},
             }
           }
         }
@@ -52,5 +52,11 @@ return {
       on_attach = on_attach
     })
     vim.lsp.enable('ts_ls')
+
+    vim.lsp.config('java_language_server', {
+      on_attach = on_attach,
+      cmd = { 'jdtls' }
+    })
+    vim.lsp.enable('java_language_server')
   end,
 }
