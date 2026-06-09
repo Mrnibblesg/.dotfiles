@@ -55,7 +55,8 @@ return {
 
     vim.lsp.config('java_language_server', {
       on_attach = on_attach,
-      cmd = { 'jdtls' }
+      cmd = { 'jdtls' },
+      root_markers = { ".project", ".classpath", "build.gradle", "build.gradle.kts", "pom.xml", ".git" }
     })
     vim.lsp.enable('java_language_server')
   end,
