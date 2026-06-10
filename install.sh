@@ -1,4 +1,5 @@
 #! /bin/bash
+set -eu
 
 # To tackle the problem of configs needing to go into various locations:
 #  - Directory as a package organization. Inside the dotfiles repo, each package or set of configs mimic the home directory structure with the places they need to go.
@@ -8,12 +9,12 @@ script_path=$(dirname "$(readlink -f "$0")")
 
 echo $script_path
 echo Mrnibbles\' Dotfiles. Contains the following configs:
-for config in ${configs[@]}; do
+for config in "${configs[@]}"; do
     echo $config
 done
 
 read -p "Install configs? (Y/n) " conf_resp
-if [[ $conf_resp != "y" && $conf_resp != "Y" && -n $conf_resp ]]; then
+if [[ $conf_resp == "n" || $conf_resp == "N" ]]; then
     echo "Skipping configs."
 else
     read -p "Install all or some? (all/some) " amount
@@ -28,7 +29,7 @@ else
 
     # Verify installation
     read -p "Configs will be placed in $config_path Proceed? (Y/n) " resp
-    if [[ $resp != "y" && $resp != "Y" && -n $resp ]]; then
+    if [[ $resp == "n" || $resp == "N" ]]; then
         echo "Install cancelled."
         exit 1
     fi
@@ -44,7 +45,7 @@ else
 
     # look at using mv -ft instead for backups
     # For recursively listing every file's path in a dir, use find (dir). It'll be clean
-    for config in ${configs[@]}; do
+    for config in "${configs[@]}"; do
         if [[ $amount == "some" ]]; then
             read -p "Load config for $config? (Y/n) " resp
             if [[ $resp == "n" || $resp == "N" ]]; then
@@ -52,13 +53,13 @@ else
             fi
         fi
         if [[ -e "${config_path}${config}" && $backup == "y" ]]; then
-            time=$(date +%G-%m-%e-%k-%M-%S)
-            echo ${config_path}${config} exists. backing up to ${backup_path}${config}-${time}.
+            timestamp=$(date +%Y-%m-%d-%H-%M-%S)
+            echo ${config_path}${config} exists. backing up to ${backup_path}${config}-${timestamp}.
 
             if ! [[ -d $backup_path ]]; then
-                mkdir $backup_path
+                mkdir -p $backup_path
             fi
-            mv -f "${config_path}${config}" "${backup_path}${config}-${time}"
+            mv -f "${config_path}${config}" "${backup_path}${config}-${timestamp}"
         fi
 
         # When should we link the whole directory as opposed to every single file?
@@ -72,64 +73,61 @@ fi
 # Invariably the themes will be coupled to the DE they were made for.
 # TODO Figure out wtf I'm doing when users are on a different DE or something
 read -p "Install themes? (Y/n) " theme_resp
-if [[ $theme_resp != "y" && $theme_resp != "Y" && -n $theme_resp ]]; then
+if [[ $theme_resp == "n" || $theme_resp == "N" ]]; then
     echo "Skipping themes."
-    exit 1
-fi
-plasma_theme_path="$script_path/themes/plasma"
-themes=()
-for file in "$plasma_theme_path/"*; do
-    if [[ -d $file ]]; then
-        themes+=("$(basename $file)")
-    fi
-done
+    exit 0
+else
 
-echo "Available themes: "
-
-for i in ${!themes[@]}; do
-    echo "$i) ${themes[$i]}"
-done
-
-#read -p "Install all or some? (all/some) " amount
-#if [[ $amount == "all" ]]; then
-#    echo "All themes will be installed."
-#elif [[ $amount == "some" ]]; then
-#    echo "You will pick which themes to install."
-#else
-#    echo "Input not recognized. Install cancelled."
-#    exit 1
-#fi
-echo "Installing all plasma themes."
-
-mkdir -p "$HOME/.local/share/color-schemes"
-mkdir -p "$HOME/.local/share/icons"
-mkdir -p "$HOME/.local/share/plasma/look-and-feel"
-
-# Install links to all wallpapers.
-# Maybe in the future I can associate groups of wallpapers to a theme so I don't explode the wallpapers of anyone who installs my themes
-mkdir -p ~/.local/share/wallpapers
-ln -fns $script_path/themes/wallpapers/*/ ~/.local/share/wallpapers/
-
-icon_offset=".local/share/icons/"
-color_offset=".local/share/color-schemes/"
-theme_offset=".local/share/plasma/look-and-feel/"
-for theme in ${themes[@]}; do
-    if [[ $amount == "some" ]]; then
-        read -p "Install theme $theme? (Y/n) " resp
-        if [[ $resp == "n" || $resp == "N" ]]; then
-            continue
+    plasma_theme_path="$script_path/themes/plasma"
+    themes=()
+    for file in "$plasma_theme_path/"*; do
+        if [[ -d $file ]]; then
+            themes+=("$(basename $file)")
         fi
-    fi
+    done
 
-    echo "$HOME/$icon_offset"
-    echo "$script_path/themes/plasma/$theme/$icon_offset"
+    echo "Available themes: "
 
-    # Icons, color scheme, overall theme.
-    # Will improve copying mechanism later
-    # Plasma is really bad when it comes to themes and symlinks so we must copy instead of link.
-    ln -fns "$script_path/themes/plasma/$theme/$icon_offset/$theme" "$HOME/$icon_offset"
-    ln -fns "$script_path/themes/plasma/$theme/$color_offset/$theme.colors" "$HOME/$color_offset"
-    ln -fns "$script_path/themes/plasma/$theme/$theme_offset/$theme" "$HOME/$theme_offset"
-done
+    for i in "${!themes[@]}"; do
+        echo "$i) ${themes[$i]}"
+    done
+
+    #read -p "Install all or some? (all/some) " amount
+    #if [[ $amount == "all" ]]; then
+    #    echo "All themes will be installed."
+    #elif [[ $amount == "some" ]]; then
+    #    echo "You will pick which themes to install."
+    #else
+    #    echo "Input not recognized. Install cancelled."
+    #    exit 1
+    #fi
+    echo "Installing all plasma themes."
+
+    mkdir -p "$HOME/.local/share/color-schemes"
+    mkdir -p "$HOME/.local/share/icons"
+    mkdir -p "$HOME/.local/share/plasma/look-and-feel"
+
+    # Install links to all wallpapers.
+    # Maybe in the future I can associate groups of wallpapers to a theme so I don't explode the wallpapers of anyone who installs my themes
+    mkdir -p ~/.local/share/wallpapers
+    ln -fns $script_path/themes/wallpapers/*/ ~/.local/share/wallpapers/
+
+    icon_offset=".local/share/icons/"
+    color_offset=".local/share/color-schemes/"
+    theme_offset=".local/share/plasma/look-and-feel/"
+    for theme in "${themes[@]}"; do
+        if [[ $amount == "some" ]]; then
+            read -p "Install theme $theme? (Y/n) " resp
+            if [[ $resp == "n" || $resp == "N" ]]; then
+                continue
+            fi
+        fi
+
+        # Icons, color scheme, overall theme.
+        ln -fns "$script_path/themes/plasma/$theme/$icon_offset/$theme" "$HOME/$icon_offset"
+        ln -fns "$script_path/themes/plasma/$theme/$color_offset/$theme.colors" "$HOME/$color_offset"
+        ln -fns "$script_path/themes/plasma/$theme/$theme_offset/$theme" "$HOME/$theme_offset"
+    done
+fi
 
 echo Finished installing. Thank you and enjoy!
