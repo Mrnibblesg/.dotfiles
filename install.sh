@@ -34,9 +34,10 @@ else
     fi
 
     # Ask the user if config backups should be made.
+    backup=
     read -p "Make backup of existing configs before install? (Y/n) " backup
-    backup_path="${config_path}.config.backup"
-    if [[ $backup == "y" || $backup == "Y" || -n $backup ]]; then
+    backup_path="${config_path}.config.backup/"
+    if [[ $backup != "n" && $backup != "N" ]]; then
         backup="y"
         echo Necessary backups will be moved to $backup_path
     fi
@@ -50,14 +51,14 @@ else
                 continue
             fi
         fi
-        
         if [[ -e "${config_path}${config}" && $backup == "y" ]]; then
-            echo ${config_path}${config} exists. backing up to $backup_path.
+            time=$(date +%G-%m-%e-%k-%M-%S)
+            echo ${config_path}${config} exists. backing up to ${backup_path}${config}-${time}.
 
             if ! [[ -d $backup_path ]]; then
                 mkdir $backup_path
             fi
-            mv -f "${config_path}${config}" $backup_path
+            mv -f "${config_path}${config}" "${backup_path}${config}-${time}"
         fi
 
         # When should we link the whole directory as opposed to every single file?
@@ -67,8 +68,9 @@ else
     done
 fi
 
-# Must be DE-agnostic. That's why we also treat the themes as packages similar to how we do the configs.
-# In the future this will support plasma global themes and hyprland themes.
+
+# Invariably the themes will be coupled to the DE they were made for.
+# TODO Figure out wtf I'm doing when users are on a different DE or something
 read -p "Install themes? (Y/n) " theme_resp
 if [[ $theme_resp != "y" && $theme_resp != "Y" && -n $theme_resp ]]; then
     echo "Skipping themes."
@@ -88,15 +90,16 @@ for i in ${!themes[@]}; do
     echo "$i) ${themes[$i]}"
 done
 
-read -p "Install all or some? (all/some) " amount
-if [[ $amount == "all" ]]; then
-    echo "All themes will be installed."
-elif [[ $amount == "some" ]]; then
-    echo "You will pick which themes to install."
-else
-    echo "Input not recognized. Install cancelled."
-    exit 1
-fi
+#read -p "Install all or some? (all/some) " amount
+#if [[ $amount == "all" ]]; then
+#    echo "All themes will be installed."
+#elif [[ $amount == "some" ]]; then
+#    echo "You will pick which themes to install."
+#else
+#    echo "Input not recognized. Install cancelled."
+#    exit 1
+#fi
+echo "Installing all plasma themes."
 
 mkdir -p "$HOME/.local/share/color-schemes"
 mkdir -p "$HOME/.local/share/icons"
@@ -104,8 +107,8 @@ mkdir -p "$HOME/.local/share/plasma/look-and-feel"
 
 # Install links to all wallpapers.
 # Maybe in the future I can associate groups of wallpapers to a theme so I don't explode the wallpapers of anyone who installs my themes
-mkdir -p "~/.local/share/wallpapers"
-ln -fns "$script_path/themes/wallpapers/*/ ~/.local/share/wallpapers/"
+mkdir -p ~/.local/share/wallpapers
+ln -fns $script_path/themes/wallpapers/*/ ~/.local/share/wallpapers/
 
 icon_offset=".local/share/icons/"
 color_offset=".local/share/color-schemes/"
