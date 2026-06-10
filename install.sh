@@ -35,7 +35,7 @@ else
 
     # Ask the user if config backups should be made.
     read -p "Make backup of existing configs before install? (Y/n) " backup
-    backup_path="${config_path}.config.bak"
+    backup_path="${config_path}.config.backup"
     if [[ $backup == "y" || $backup == "Y" || -n $backup ]]; then
         backup="y"
         echo Necessary backups will be moved to $backup_path
@@ -50,7 +50,7 @@ else
                 continue
             fi
         fi
-
+        
         if [[ -e "${config_path}${config}" && $backup == "y" ]]; then
             echo ${config_path}${config} exists. backing up to $backup_path.
 
@@ -59,23 +59,21 @@ else
             fi
             mv -f "${config_path}${config}" $backup_path
         fi
-        
-        # Mirror everything in the configs path to the home directory.
-        # If a directory doesn't exist, it should be made to exist.
+
         # When should we link the whole directory as opposed to every single file?
-        ln -fs "$script_path/configs/.config/${config}" "${config_path}${config}"
+        ln -fns "$script_path/configs/.config/${config}" "${config_path}${config}"
         
         echo Loaded config "${config_path}${config}"
     done
 fi
 
-
+# Must be DE-agnostic. That's why we also treat the themes as packages similar to how we do the configs.
+# In the future this will support plasma global themes and hyprland themes.
 read -p "Install themes? (Y/n) " theme_resp
 if [[ $theme_resp != "y" && $theme_resp != "Y" && -n $theme_resp ]]; then
     echo "Skipping themes."
     exit 1
 fi
-
 plasma_theme_path="$script_path/themes/plasma"
 themes=()
 for file in "$plasma_theme_path/"*; do
@@ -95,7 +93,6 @@ if [[ $amount == "all" ]]; then
     echo "All themes will be installed."
 elif [[ $amount == "some" ]]; then
     echo "You will pick which themes to install."
-    # Not implemented yet
 else
     echo "Input not recognized. Install cancelled."
     exit 1
@@ -105,9 +102,10 @@ mkdir -p "$HOME/.local/share/color-schemes"
 mkdir -p "$HOME/.local/share/icons"
 mkdir -p "$HOME/.local/share/plasma/look-and-feel"
 
-# TODO wallpapers hardcoded in, make per-theme in later fix.
-mkdir -p $HOME/Pictures/wallpapers/hitech
-cp $script_path/themes/wallpapers/* $HOME/Pictures/wallpapers/hitech
+# Install links to all wallpapers.
+# Maybe in the future I can associate groups of wallpapers to a theme so I don't explode the wallpapers of anyone who installs my themes
+mkdir -p "~/.local/share/wallpapers"
+ln "$script_path/themes/wallpapers/*/ ~/.local/share/wallpapers/"
 
 icon_offset=".local/share/icons/"
 color_offset=".local/share/color-schemes/"
@@ -126,9 +124,9 @@ for theme in ${themes[@]}; do
     # Icons, color scheme, overall theme.
     # Will improve copying mechanism later
     # Plasma is really bad when it comes to themes and symlinks so we must copy instead of link.
-    ln -fs "$script_path/themes/plasma/$theme/$icon_offset/$theme" "$HOME/$icon_offset"
-    ln -fs "$script_path/themes/plasma/$theme/$color_offset/$theme.colors" "$HOME/$color_offset"
-    ln -fs "$script_path/themes/plasma/$theme/$theme_offset/$theme" "$HOME/$theme_offset"
+    ln -fns "$script_path/themes/plasma/$theme/$icon_offset/$theme" "$HOME/$icon_offset"
+    ln -fns "$script_path/themes/plasma/$theme/$color_offset/$theme.colors" "$HOME/$color_offset"
+    ln -fns "$script_path/themes/plasma/$theme/$theme_offset/$theme" "$HOME/$theme_offset"
 done
 
 echo Finished installing. Thank you and enjoy!

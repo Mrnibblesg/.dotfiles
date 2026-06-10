@@ -1,4 +1,10 @@
 #! /bin/bash
+
+# This is for switching between global plasma themes
+echo "This is the plasma global theme switcher,
+including more things than the real global theme switcher provides, also switching:
+- widget layout
+- desktop wallpapers"
 lookandfeeltool -l
 
 read -p "Which would you like? " choice
