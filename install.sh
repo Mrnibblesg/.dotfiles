@@ -39,7 +39,6 @@ install_config() {
             continue
         fi
         # It's a file we should place/replace.
-        echo $dest_item
         if [[ -e $dest_item ]]; then
             if [[ -L $dest_item && $(readlink -f "$dest_item") == "$script_path"/* ]]; then
                 continue
@@ -49,7 +48,6 @@ install_config() {
             mv -f "$dest_item" file_backup
             echo "$dest_item already exists. Backing up to $file_backup"
         fi
-        # symlink this
         echo "Symlinked $dest_item to $item"
         ln -fns $item $dest_item
     done
@@ -96,21 +94,6 @@ else
         fi
         install_config "$config" "$HOME"
         echo Loaded "$conf_name"
-
-        # TODO Reimplement backups
-        #if [[ -e "${config_path}${config}" && $backup == "y" ]]; then
-        #    timestamp=$(date +%Y-%m-%d-%H-%M-%S)
-        #    echo ${config_path}${config} exists. backing up to ${backup_path}${config}-${timestamp}.
-
-        #    if ! [[ -d $backup_path ]]; then
-        #        mkdir -p $backup_path
-        #    fi
-        #    mv -f "${config_path}${config}" "${backup_path}${config}-${timestamp}"
-        #fi
-
-        ## When should we link the whole directory as opposed to every single file?
-        #ln -fns "$script_path/configs/.config/${config}" "${config_path}${config}"
-        
     done
 fi
 
