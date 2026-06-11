@@ -4,7 +4,7 @@ shopt -s dotglob # Include hidden files in filename expansions
 
 # Files to skip
 XDG_SPEC_DIRS=("$HOME/.config" "$HOME/.local" "$HOME/.local/share")
-echo ${XDG_SPEC_DIRS[@]}
+
 script_path=$(dirname "$(readlink -f "$0")")
 timestamp=$(date +%Y-%m-%d-%H-%M-%S)
 backup_path="${HOME}/.config/.config.backup/"
@@ -45,7 +45,7 @@ install_config() {
             fi
             # Don't do anything if this is one of our own links.
             local file_backup="${backup_path}${name}-${timestamp}"
-            mv -f "$dest_item" file_backup
+            mv -f "$dest_item" $file_backup
             echo "$dest_item already exists. Backing up to $file_backup"
         fi
         echo "Symlinked $dest_item to $item"
