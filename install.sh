@@ -1,17 +1,59 @@
 #! /bin/bash
-set -eu
+set -eu # For safety
+shopt -s dotglob # Include hidden files in filename expansions
 
-# To tackle the problem of configs needing to go into various locations:
-#  - Directory as a package organization. Inside the dotfiles repo, each package or set of configs mimic the home directory structure with the places they need to go.
-configs=("nvim" "kitty" "onedrive" "kglobalshortcutsrc")
-config_path=$HOME/.config/
+# Files to skip
+XDG_SPEC_DIRS=("$HOME/.config" "$HOME/.local" "$HOME/.local/share")
+echo ${XDG_SPEC_DIRS[@]}
 script_path=$(dirname "$(readlink -f "$0")")
+timestamp=$(date +%Y-%m-%d-%H-%M-%S)
+backup_path="${HOME}/.config/.config.backup/"
 
 echo $script_path
 echo Mrnibbles\' Dotfiles. Contains the following configs:
-for config in "${configs[@]}"; do
-    echo $config
-done
+ls "$script_path"/configs
+
+# Find $1 in the rest
+contains() {
+    needle=$1; shift
+    for haystack in "$@"; do
+        [[ $haystack == $needle ]] && return 0
+    done
+    return 1
+}
+
+# Installs the given config. It starts by searching for its directory within ./configs.
+# Takes the config name as $1.
+# Mirrors the inside structure on top of the destination, $2.
+install_config() {
+    local config=$1
+    local dest_dir=$2
+    # Recurse through the given config.
+    # If a file or directory isn't in the XDG_SPEC_DIRS, we know we should symlink it and to skip its insides (if it's a dir).
+    # If anything already exists there and it's not a symlink back to the same config, we skip it.
+    for item in "$config"/*; do
+        local name=$(basename $item)
+        local dest_item=$dest_dir/$name
+        if [[ -d $dest_item ]] && contains $dest_item ${XDG_SPEC_DIRS[@]}; then
+            install_config $item $dest_item
+            continue
+        fi
+        # It's a file we should place/replace.
+        echo $dest_item
+        if [[ -e $dest_item ]]; then
+            if [[ -L $dest_item && $(readlink -f "$dest_item") == "$script_path"/* ]]; then
+                continue
+            fi
+            # Don't do anything if this is one of our own links.
+            local file_backup="${backup_path}${name}-${timestamp}"
+            mv -f "$dest_item" file_backup
+            echo "$dest_item already exists. Backing up to $file_backup"
+        fi
+        # symlink this
+        echo "Symlinked $dest_item to $item"
+        ln -fns $item $dest_item
+    done
+}
 
 read -p "Install configs? (Y/n) " conf_resp
 if [[ $conf_resp == "n" || $conf_resp == "N" ]]; then
@@ -28,16 +70,14 @@ else
     fi
 
     # Verify installation
-    read -p "Configs will be placed in $config_path Proceed? (Y/n) " resp
+    read -p "Configs will be based in "$HOME". Proceed? (Y/n) " resp
     if [[ $resp == "n" || $resp == "N" ]]; then
         echo "Install cancelled."
         exit 1
     fi
 
-    # Ask the user if config backups should be made.
     backup=
     read -p "Make backup of existing configs before install? (Y/n) " backup
-    backup_path="${config_path}.config.backup/"
     if [[ $backup != "n" && $backup != "N" ]]; then
         backup="y"
         echo Necessary backups will be moved to $backup_path
@@ -45,27 +85,32 @@ else
 
     # look at using mv -ft instead for backups
     # For recursively listing every file's path in a dir, use find (dir). It'll be clean
-    for config in "${configs[@]}"; do
+    for config in "$script_path/configs/"*; do
+        conf_name=$(basename $config)
+        
         if [[ $amount == "some" ]]; then
-            read -p "Load config for $config? (Y/n) " resp
+            read -p "Load config for $(basename $config)? (Y/n) " resp
             if [[ $resp == "n" || $resp == "N" ]]; then
                 continue
             fi
         fi
-        if [[ -e "${config_path}${config}" && $backup == "y" ]]; then
-            timestamp=$(date +%Y-%m-%d-%H-%M-%S)
-            echo ${config_path}${config} exists. backing up to ${backup_path}${config}-${timestamp}.
+        install_config "$config" "$HOME"
+        echo Loaded "$conf_name"
 
-            if ! [[ -d $backup_path ]]; then
-                mkdir -p $backup_path
-            fi
-            mv -f "${config_path}${config}" "${backup_path}${config}-${timestamp}"
-        fi
+        # TODO Reimplement backups
+        #if [[ -e "${config_path}${config}" && $backup == "y" ]]; then
+        #    timestamp=$(date +%Y-%m-%d-%H-%M-%S)
+        #    echo ${config_path}${config} exists. backing up to ${backup_path}${config}-${timestamp}.
 
-        # When should we link the whole directory as opposed to every single file?
-        ln -fns "$script_path/configs/.config/${config}" "${config_path}${config}"
+        #    if ! [[ -d $backup_path ]]; then
+        #        mkdir -p $backup_path
+        #    fi
+        #    mv -f "${config_path}${config}" "${backup_path}${config}-${timestamp}"
+        #fi
+
+        ## When should we link the whole directory as opposed to every single file?
+        #ln -fns "$script_path/configs/.config/${config}" "${config_path}${config}"
         
-        echo Loaded config "${config_path}${config}"
     done
 fi
 

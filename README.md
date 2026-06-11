@@ -22,6 +22,9 @@ This repo also comes with a helper bash script to switch global themes. I had ma
 # Updating
 Since the install script only creates symbolic links, there should be no need to re-install as long as those links still exist and no new files have been added to the repo. Simply a git pull and a config reload of your respective application should be sufficient.
 
+# Uninstalling
+Currently not handled well. You'll need to restore the original configs yourself, removing symlinks created by the installation script. If you enabled backups, you can find your configs inside of `~/.config/.config.backup/`. Configs that were conflicting when you asked the installer to install a config are moved here with the timestamp of when the script was ran.
+Unknown if I will add a backup restore in the future.
 
 # Theme Details
 ## Keybinds
